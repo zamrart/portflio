@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Oscar Anwar - 3D Artist | Game Artist | Digital Sculptor">
+    <title>Oscar Anwar | 3D Artist | Game Artist | Digital Sculptor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Global Styling */
+        body {
+            font-family: 'Orbitron', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #0a0a0a; /* Darker black for base */
+            color: #e0e0e0;
+        }
+        
+        canvas {
+            display: block;
+            position: fixed; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none; 
+        }
+        .content {
+            position: relative;
+            z-index: 1;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: #0a0a0a; /* Dark black */
+            background-image: url('Resources/Header_BG2.jpg');
+            background-size: cover;           
+            background-position: center center;
+            background-repeat: no-repeat;
+            color: #d4af37; /* Gold color */
+            text-align: center;
+            padding: 60px 20px;               
+            box-shadow: 0 0 15px #d4af37; /* Gold glow */
+            position: relative;
+        }
+        header img {
+            width: 150px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+            box-shadow: 0 0 15px #d4af37; /* Gold glow */
+        }
+        header h1 {
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            color: #ffffff; /* Gold color */
+            letter-spacing: 2px;
+        }
+        header h2 {
+            font-size: 1.2rem;
+            color: #ffffff; /* Brighter gold */
+            margin: 0;
+        }
+        header p {
+            font-size: 1.2rem;
+            color: #ffd700; /* Brighter gold */
+            margin: 0;
+        }
+
+        /* Tabs Section */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap; 
+            gap: 12px; 
+            margin: 40px auto;
+            max-width: 100%;
+            padding: 0 10px;
+        }
+
+        .tab-button {
+            flex: 1 1 auto; 
+            min-width: 140px; 
+            padding: 12px 25px;
+            background-color: #1a1a1a;
+            color: #ffd700; /* Gold color */
+            cursor: pointer;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-size: 1.1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border-radius: 6px;
+        }
+
+        .tab-button.active {
+            border-bottom: 2px solid #d4af37; /* Gold color */
+        }
+
+        .tab-button:hover {
+            background-color: #262626;
+            color: #ffd700; /* Gold color */
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3); /* Gold shadow */
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            padding: 20px;
+            background: linear-gradient(145deg, #1a1a1a, #252525);
+            max-width: 900px;
+            margin: 30px auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 30px rgba(212, 175, 55, 0.3); /* Gold shadow */
+            transition: background 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* List styling */
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        /* List item styling */
+        li {
+            background-color: #1a1a1a;
+            margin-bottom: 15px; 
+            padding: 15px; 
+            border-left: 4px solid #d4af37; /* Gold color */
+            border-radius: 8px; 
+            transition: transform 0.2s, box-shadow 0.2s; 
+        }
+        /* Hover effect for list items */
+        li:hover {
+            transform: translateY(-2px); /* Slight lift effect */
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.5); /* Gold shadow */
+        }
+        h3 {
+            color: #d4af37; /* Gold color */
+            margin-bottom: 15px; 
+        }
+
+        /* Skills Section */
+        .skills-section {
+            margin-bottom: 40px;
+        }
+        .skills-section h2 {
+            color: #d4af37; /* Gold color */
+            font-size: 2rem;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        .skills-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent); /* Gold gradient */
+        }
+        .skills-category {
+            margin-bottom: 30px;
+        }
+        .skills-category h3 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #ffd700; /* Brighter gold */
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #30363d;
+        }
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .skill-item {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 12px 15px;
+            color: #c9d1d9;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+            text-align: center;     
+            gap: 8px;
+        }
+        .skill-item:hover {
+            background-color: #1c2128;
+            border-color: #d4af37; /* Gold color */
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.1); /* Gold shadow */
+        }
+        .skill-item strong {
+            color: #e6edf3;
+        }
+        /* Software & Tools Section */
+        .software-section {
+            margin-top: 50px;
+        }
+        
+        /* Icons styling */
+        .social-icons {
+            position: absolute; 
+            top: 320px;
+            right: 20px; 
+            display: flex; 
+        }
+        .social-icons a {
+            margin: 0 10px;
+            color: #d4af37; 
+            text-decoration: none;
+            font-size: 2.5rem; 
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .social-icons a:hover {
+            color: #ffd700; /* Brighter gold */
+            transform: scale(1.1); 
+        }
+            
+        /* Industry Project Styling */
+        .industry-project {
+            background-color: #1a1a1a;
+            padding: 10px;
+            margin: 15px 0;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2); /* Gold shadow */
+        }
+        .industry-project h3 {
+            color: #d4af37; /* Gold color */
+            font-size: 1.6rem;
+            margin: 0;
+        }
+        .industry-project p {
+            color: #ffd700; /* Brighter gold */
+            margin: 5px 0;
+            font-size: 1rem;
+        }
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .project-icon {
+            width: 120px; 
+            height: 120px; /* Square box shape */
+            margin-left: 15px;
+            border-radius: 5px; 
+            border: 2px solid #d4af37; /* Gold color */
+            margin-bottom: -80px;
+        }
+        .project-description {
+            margin-top: 10px;
+        }
+        .project-description h4 {
+            color: #d4af37; /* Gold color */
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+        }
+        .project-description li {
+            margin: 5px 0;
+            font-size: 1rem;
+            padding-left: 10px;
+            color: #ffffff;
+        }
+        .project-description li i {
+            color: #d4af37; /* Gold color */
+            margin-right: 20px;
+            font-size: 1.2rem;
+            position: absolute;
+            left: 0;
+            top: 10;
+        }
+        .project-description ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            color: #ffd700; /* Brighter gold */
+        }
+
+        /* Fullscreen effect for iOS images */
+        .fullscreen-ios {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: contain;
+            z-index: 9999;
+            background-color: rgba(0, 0, 0, 0.9);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); /* Gold shadow */
+            transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+        }
+        
+       /* Media for Video and Images */
+        .media-container {
+            margin-top: 20px;
+        }
+
+        .media-container h3 {
+            color: #d4af37; /* Gold color */
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+        }
+
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            transition: display 0.2s, box-shadow 0.2s;
+        }
+
+        .media-grid video,
+        .media-grid img {
+            width: 100%;
+            height: 220px; /* Fixed height for uniform grid */
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+        }
+
+        .media-grid video:hover,
+        .media-grid img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+            filter: brightness(1.1);
+        }
+
+        /* Fullscreen behavior (standard browsers) */
+        .media-grid video:fullscreen,
+        .media-grid img:fullscreen {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Preserve original aspect ratio */
+            border-radius: 0;
+            box-shadow: none;
+            background-color: black; /* Fill unused space */
+        }
+
+        /* WebKit (Safari) fullscreen support */
+        .media-grid video:-webkit-full-screen,
+        .media-grid img:-webkit-full-screen {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 0;
+            box-shadow: none;
+            background-color: black;
+        }
+
+        /* Fallback for iOS (CSS fullscreen style) */
+        .fullscreen-ios {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: contain;
+            background: black;
+            z-index: 9999;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #0a0a0a; /* Dark black */
+            color: #d4af37; /* Gold color */
+            box-shadow: 0 0 15px #d4af37; /* Gold glow */
+        }
+        footer p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+        header h1, footer p {
+            text-shadow: 0 0 10px #000000, 0 0 20px #000000, 0 0 30px #000000; 
+        }
+
+        /* Orbitron font for futuristic style */
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+    </style>
+</head>
+
+<body>
+    <canvas id="artCanvas"></canvas>
+    <script src="matrix.js"></script>
+
+    <header>
+        <img src="Resources/ProfilePicture.JPG" alt="Oscar Anwar">
+        <h1>Oscar Anwar</h1>
+        <h2>3D Artist | Game Artist | Digital Sculptor</h2>
+        <div class="social-icons">
+            <a href="https://www.linkedin.com/in/zamrart" target="_blank" title="LinkedIn">
+                <i class="fab fa-linkedin"></i>
+            </a>
+            <a href="https://www.artstation.com/zamrart" target="_blank" title="ArtStation">
+                <i class="fab fa-artstation"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- Tabs for About Me and Project Sections -->
+    <div class="tabs">
+        <button class="tab-button active" onclick="openTab(event, 'about')">About Me</button>
+        <button class="tab-button" onclick="openTab(event, 'industry')">Industry Projects</button>
+        <button class="tab-button" onclick="openTab(event, 'freelance')">Freelance Projects</button>
+        <button class="tab-button" onclick="openTab(event, 'personal')">Personal Projects</button>
+    </div>
+
+    <!-- About Me Section -->
+     <div class="container">
+        <div id="about" class="tab-content active">
+        <p>
+            With over five years of experience as a freelance 3D artist, I specialize in crafting immersive visuals, dynamic character designs, and detailed environments. 
+            My passion lies in merging artistry with technology to bring captivating experiences to life.
+        </p>
+
+        <p>
+            As a game artist, I'm driven by a vision to create compelling narratives and culturally rich gaming experiences. 
+            While our journey is just beginning, my focus is on leading development efforts, refining workflows, and pushing creative boundaries.
+        </p>
+
+        <p>
+            I'm always open to exciting opportunities where I can apply my skills — whether in game development, 3D art, or technical artistry. 
+            Let’s connect and create something amazing! 🎨✨
+        </p>
+
+            <!-- Skills Section -->
+            <div class="skills-section">
+                <h2>Software</h2>
+                <div class="skills-grid">
+                    <div class="skill-item"><strong>Maya</strong></div>
+                    <div class="skill-item"><strong>Blender</strong></div>
+                    <div class="skill-item"><strong>ZBrush</strong></div>
+                    <div class="skill-item"><strong>Substance Painter</strong></div>
+                    <div class="skill-item"><strong>Marvelous Designer</strong></div>
+                    <div class="skill-item"><strong>Character Creator</strong></div>
+                    <div class="skill-item"><strong>Unity</strong></div>
+                    <div class="skill-item"><strong>Unreal Engine</strong></div>
+                    <div class="skill-item"><strong>Adobe Creative Suite</strong></div>
+                </div>
+            </div>
+
+            <div class="skills-section">
+                <h2>Technical Skills</h2>
+                <div class="skills-grid">
+                    <div class="skill-item"><strong>3D Modeling</strong></div>
+                    <div class="skill-item"><strong>Digital Sculpting</strong></div>
+                    <div class="skill-item"><strong>Rigging</strong></div>
+                    <div class="skill-item"><strong>UV Mapping</strong></div>
+                    <div class="skill-item"><strong>Texture Painting</strong></div>
+                    <div class="skill-item"><strong>Lighting</strong></div>
+                    <div class="skill-item"><strong>Rendering</strong></div>
+                    <div class="skill-item"><strong>Shader Development</strong></div>
+                    <div class="skill-item"><strong>Grooming</strong></div>
+                    <div class="skill-item"><strong>VFX</strong></div>
+                    <div class="skill-item"><strong>UI/UX Design</strong></div>
+                    <div class="skill-item"><strong>AR Development</strong></div>
+                </div>
+            </div>
+
+            <div class="skills-section">
+                <h2>Artistic Skills</h2>
+                <div class="skills-grid">
+                    <div class="skill-item"><strong>Storyboarding</strong></div>
+                    <div class="skill-item"><strong>Character & Environment Design</strong></div>
+                    <div class="skill-item"><strong>Conceptualizing</strong></div>
+                    <div class="skill-item"><strong>Art Directing</strong></div>
+                    <div class="skill-item"><strong>Hard-Surface Modeling</strong></div>
+                    <div class="skill-item"><strong>Stylized Art</strong></div>
+                </div>
+            </div>
+
+            <div class="skills-section">
+                <h2>Soft Skills</h2>
+                <div class="skills-grid">
+                    <div class="skill-item"><strong>Pipeline & Workflow Management</strong></div>
+                    <div class="skill-item"><strong>Team Leadership</strong></div>
+                    <div class="skill-item"><strong>Project Planning</strong></div>
+                    <div class="skill-item"><strong>Client Collaboration</strong></div>
+                    <div class="skill-item"><strong>Feedback Integration</strong></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <!-- Industry Projects / Experience Section -->
+    <div id="industry" class="tab-content">
+
+        <!-- Torum Technology -->
+        <div class="industry-project">
+            <div class="project-header">
+                <h3>Torum Technology Sdn. Bhd.</h3>
+                <img src="Resources/IndustryProjects/Torum/TorumLogo.jpg" alt="Torum Icon" class="project-icon">
+            </div>
+            <p><strong>Role:</strong> Lead 3D Artist & Technical Artist</p>
+            <p><strong>Duration:</strong> Oct 2023 - Sep 2024</p>
+            <p><strong>Location:</strong> Kuala Lumpur, Malaysia</p>
+            <p><strong>Source:</strong> <a href="https://intro.torum.com" target="_blank">Official Company Page</a></p>
+            <div class="project-description">
+                <h4>Description:</h4>
+                <ul>
+                    <li>Led research and workflow development for a new AR Application focused on interactive face filters for crypto users.</li>
+                    <li>Created and implemented 3D art assets including modeling, texturing, blendshapes, shaders, lighting, and post-processing in Unity.</li>
+                    <li>Provided oversight, feedback, and adjustments for outsourced artists to ensure high-quality deliverables.</li>
+                    <li>Collaborated with the tech team to define user-centric optimization, tool development, and production workflow improvements.</li>
+                    <li>Produced high-quality 3D renders and visual assets for marketing materials and the company website.</li>
+                    <li>Contributed to technical and creative decision-making during project meetings to enhance efficiency and visual quality.</li>
+                </ul>
+            </div>
+             <div class="media-container">
+                <h3>Media Showcase</h3>
+                <div class="media-grid">
+                    <img src="Resources/IndustryProjects/Torum/Torum01.png" alt="360Cooked" onclick="openFullscreen(this)">
+                    <img src="Resources/IndustryProjects/Torum/Torum02.png" alt="Filters Overview" onclick="openFullscreen(this)">
+                    <img src="Resources/IndustryProjects/Torum/IMG_12857.png" alt="Filters Overview" onclick="openFullscreen(this)">
+                    <img src="Resources/IndustryProjects/Torum/IMG_6991.png" alt="Filters Overview" onclick="openFullscreen(this)">
+
+                    <video controls>
+                        <source src="Resources/IndustryProjects/Torum/Torum_IOS.mp4" type="video/webm">
+                    </video>
+                </div>
+            </div>
+        </div>
+
+        <!-- Good Place Games -->
+        <div class="industry-project">
+            <div class="project-header">
+                <h3>Good Place Games Öu</h3>
+                <img src="Resources/IndustryProjects/GoodPlaceGames/GPG_Logo.png" alt="Good Place Games Icon" class="project-icon">
+            </div>
+            <p><strong>Role:</strong> Game Director / 3D Artist</p>
+            <p><strong>Duration:</strong> Jan 2022 - Jun 2023</p>
+            <p><strong>Location:</strong> Remote</p>
+            <p><strong>Source:</strong> <a href="https://www.goodplace.games" target="_blank">Official Company Page</a></p>    
+            <div class="project-description">
+                <h4>Description:</h4>
+                <ul>
+                    <li>Sole 3D artist in a small indie team of 6, contributing to all aspects of game art and development.</li>
+                    <li>Designed and implemented environment and character models, shaders, textures, and VFX, enhancing the game’s visual quality.</li>
+                    <li>Developed UI/UX elements and collaborated on game mechanics to ensure a cohesive player experience.</li>
+                    <li>Led project planning and technical art workflows, optimizing efficiency for a small team.</li>
+                    <li>Produced 3D renders and assets that contributed to an immersive and engaging gameplay experience.</li>
+                </ul>
+            </div>
+            <div class="media-container">
+                <h3>Media Showcase</h3>
+                <div class="media-grid">
+                    <img src="Resources/IndustryProjects/GoodPlaceGames/DummyPirates01.png" alt="Pirates" onclick="openFullscreen(this)">
+                    <img src="Resources/IndustryProjects/GoodPlaceGames/DummyPirates02.png" alt="Cold Pearls" onclick="openFullscreen(this)">
+                    <video controls>
+                        <source src="Resources/IndustryProjects/GoodPlaceGames/DummyPirates05.mp4" type="video/webm">
+                    </video>
+                    <img src="Resources/IndustryProjects/GoodPlaceGames/DummyPirates06.png" alt="Sun Jolly" onclick="openFullscreen(this)">
+                    <video controls>
+                        <source src="Resources/IndustryProjects/GoodPlaceGames/DummyPirates08.mp4" type="video/webm">
+                    </video>
+                    <img src="Resources/IndustryProjects/GoodPlaceGames/DummyPirates07.png" alt="Germ Pirates" onclick="openFullscreen(this)">
+                    <video controls>
+                        <source src="Resources/IndustryProjects/GoodPlaceGames/DummyPirates03.mp4" type="video/webm">
+                    </video>
+                    <video controls>
+                        <source src="Resources/IndustryProjects/GoodPlaceGames/DummyPirates04.mp4" type="video/webm">
+                    </video>
+                    <video controls>
+                        <source src="Resources/IndustryProjects/GoodPlaceGames/DummyPirates_InGame.mp4" type="video/webm">
+                    </video>
+                    <video controls>
+                        <source src="Resources/IndustryProjects/GoodPlaceGames/DummyPirates_SlideShow.mp4" type="video/webm">
+                    </video>
+                </div>
+            </div>
+        </div>
+
+        <!-- Popcorn Marketing -->
+        <div class="industry-project">
+            <div class="project-header">
+                <h3>Popcorn Marketing</h3>
+                <img src="Resources/IndustryProjects/PopcornMarketing/PopcornLogo.png" alt="Popcorn Marketing Icon" class="project-icon">
+            </div>
+            <p><strong>Role:</strong> 3D Artist</p>
+            <p><strong>Duration:</strong> Jul 2022 - Sep 2022</p>
+            <p><strong>Location:</strong> Kuala Lumpur, Malaysia</p>
+            <p><strong>Source:</strong> <a href="https://popcorndaddy.co/" target="_blank">Official Company Page</a></p>
+            <div class="project-description">
+                <h4>Description:</h4>
+                <ul>
+                    <li>Translated concept art of a stylized ANT character for an NFT project into fully optimized 3D models.</li>
+                    <li>Created a base model used to generate multiple variations of the character.</li>
+                    <li>Produced two distinct versions of the ANT using various 3D tools and software, ready for rigging and animation.</li>
+                    <li>Ensured models were optimized for performance while maintaining visual fidelity.</li>
+                </ul>
+            </div>
+            <div class="media-container">
+                <h3>Media Showcase</h3>
+                <div class="media-grid">
+                    <img src="Resources/IndustryProjects/PopcornMarketing/Ant01.png" alt="Ant Base" onclick="openFullscreen(this)">
+                    <img src="Resources/IndustryProjects/PopcornMarketing/Ant02.png" alt="Ant Quenn" onclick="openFullscreen(this)">
+                    <img src="Resources/IndustryProjects/PopcornMarketing/Ant03.png" alt="ANT Peasant" onclick="openFullscreen(this)">
+                </div>
+            </div>
+        </div>
+
+        <!-- CYBERDOGZ.io -->
+        <div class="industry-project">
+            <div class="project-header">
+                <h3>CYBERDOGZ.io</h3>
+                <img src="Resources/IndustryProjects/Cyberdogz/CyberdogzLogo.png" alt="Cyberdogz Icon" class="project-icon">
+            </div>
+            <p><strong>Role:</strong> 3D Artist</p>
+            <p><strong>Duration:</strong> Aug 2021 - Jul 2022</p>
+            <p><strong>Location:</strong> Remote</p>
+            <p><strong>Source:</strong> <a href="https://cyberdogz.io" target="_blank">Official Company Page</a></p>    
+            <div class="project-description">
+                <h4>Description:</h4>
+                <ul>
+                    <li>Created 3D characters for the ongoing NFT project CYBERDOGZ, from concept to final render.</li>
+                    <li>Led and managed a team to deliver end-to-end character assets, including sculpting, modeling, retopology, UV mapping, texturing, lighting, rendering, and compositing.</li>
+                    <li>Planned and documented workflows with breakdowns, milestones, and schedules to ensure timely delivery.</li>
+                    <li>Oversaw quality and consistency across all character assets, ensuring alignment with project vision.</li>
+                </ul>
+            </div>
+            <div class="media-container">
+                <h3>Media Showcase</h3>
+                <div class="media-grid">
+                    <img src="Resources/IndustryProjects/Cyberdogz/Cyberdogz01.png" alt="Close-up Blender Cycles Render" onclick="openFullscreen(this)">
+                    <img src="Resources/IndustryProjects/Cyberdogz/Cyberdogz02.png" alt="Blender Cycles Render" onclick="openFullscreen(this)">
+                    <img src="Resources/IndustryProjects/Cyberdogz/Cyberdogz03.png" alt="Blender Cycles Render" onclick="openFullscreen(this)">
+                    <img src="Resources/IndustryProjects/Cyberdogz/Cyberdogz04.png" alt="Blender Cycles Render" onclick="openFullscreen(this)">
+                    <img src="Resources/IndustryProjects/Cyberdogz/Cyberdogz05.png" alt="Blender Cycles Render" onclick="openFullscreen(this)">
+                    <img src="Resources/IndustryProjects/Cyberdogz/Cyberdogz06.png" alt="Blender Cycles Render" onclick="openFullscreen(this)">
+                    <img src="Resources/IndustryProjects/Cyberdogz/Cyberdogz07.png" alt="Blender Cycles Render" onclick="openFullscreen(this)">
+                    <img src="Resources/IndustryProjects/Cyberdogz/Cyberdogz08.png" alt="Concept Art" onclick="openFullscreen(this)">
+
+                    <video controls>
+                        <source src="Resources/IndustryProjects/Cyberdogz/Cyberdogz09.mp4" type="video/webm">
+                    </video>
+
+                    <img src="Resources/IndustryProjects/Cyberdogz/Cyberdogz10.png" alt="Look Dev Progress" onclick="openFullscreen(this)">
+                    <img src="Resources/IndustryProjects/Cyberdogz/Cyberdogz11.png" alt="Base Material Progress" onclick="openFullscreen(this)">
+                    <img src="Resources/IndustryProjects/Cyberdogz/Cyberdogz12.png" alt="Base Material Progress" onclick="openFullscreen(this)">
+                    <img src="Resources/IndustryProjects/Cyberdogz/Cyberdogz13.png" alt="Blocking Progress" onclick="openFullscreen(this)">
+                    <img src="Resources/IndustryProjects/Cyberdogz/Cyberdogz14.png" alt="Blocking Progress" onclick="openFullscreen(this)">
+                </div>
+            </div>
+        </div>
+
+        <!-- Smart Business Services -->
+        <div class="industry-project">
+            <div class="project-header">
+                <h3>Smart Business Services</h3>
+                <img src="Resources/IndustryProjects/SmartBusiness/SmartBusinessLogo.png" alt="Smart Business Icon" class="project-icon">
+            </div>
+            <p><strong>Role:</strong> 3D Artist</p>
+            <p><strong>Duration:</strong> Sep 2020 - Aug 2021</p>
+            <p><strong>Location:</strong> Cairo, Egypt</p>
+            <p><strong>Source:</strong> <a href="http://www.sa-sbs.com" target="_blank">Official Company Page</a></p>    
+            <div class="project-description">
+                <h4>Description:</h4>
+                <ul>
+                    <li>Created 3D assets and motion graphics for a pitching project for ROTANA Studios, collaborating closely with the art director and motion design team.</li>
+                    <li>Developed storyboards and concepts, transforming ideas into visually compelling 3D animations.</li>
+                    <li>Handled end-to-end 3D production including modeling, animation, simulation, texturing, lighting, VFX, and rendering.</li>
+                    <li>Delivered high-quality visuals that met project goals and client expectations.</li>
+                </ul>
+            </div>
+            <div class="media-container">
+                <h3>Media Showcase</h3>
+                <div class="media-grid">
+                    <img src="Resources/IndustryProjects/SmartBusiness/Cinema.png" alt="Cinema" onclick="openFullscreen(this)">
+                </div>
+            </div>
+        </div>
+
+        <!-- Arai for Advertisement -->
+        <div class="industry-project">
+            <div class="project-header">
+                <h3>Arai for Advertisement and Public Relations</h3>
+                <img src="Resources/IndustryProjects/Arai/AraiLogo.png" alt="Arai Icon" class="project-icon">
+            </div>
+            <p><strong>Role:</strong> Graphic Designer</p>
+            <p><strong>Duration:</strong> Sep 2015 - Feb 2017</p>
+            <p><strong>Location:</strong> Riyadh, Saudi Arabia</p>
+            <p><strong>Source:</strong> <a href="https://www.findsaudi.com/ar/CatView/392/2801/%D8%B4%D8%B1%D9%83%D8%A9_%D8%A7%D8%B1%D8%A7%D9%8A_%D9%84%D9%84%D8%AF%D8%B9%D8%A7%D9%8A%D8%A9_%D9%88%D8%A7%D9%84%D8%A7%D8%B9%D9%84%D8%A7%D9%86.aspx" target="_blank">Official Company Page</a></p>    
+            <div class="project-description">
+                <h4>Description:</h4>
+                <ul>
+                    <li>Created visually compelling designs to effectively communicate messages and concepts for various clients and projects.</li>
+                    <li>Worked on branding, logo design, motion graphics, brochures, posters, and print materials.</li>
+                    <li>Ensured designs were impactful, professional, and aligned with client goals.</li>
+                    <li>Collaborated with team members to deliver high-quality creative solutions on time.</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Freelance Projects -->
+    <div id="freelance" class="tab-content">
+        <ul>
+            <div class="industry-project">
+                <h3>Freelance Project 1:</h3>
+                <p>Description of the first freelance project.</p>
+            </div>
+
+            <div class="industry-project">
+                <h3>Freelance Project 2:</h3>
+                <p>Description of the second freelance project.</p>
+            </div>
+        </ul>
+
+    </div>
+
+    <!-- Personal Projects -->
+    <div id="personal" class="tab-content">
+        <ul>
+        <div class="industry-project">
+            <h3>Personal Project 1:</h3>
+            <p>Description of the first personal project.</p>
+        </div>
+
+        <div class="industry-project">
+            <h3>Personal Project 2:</h3>
+            <p>Description of the second personal project.</p>
+        </div>
+        </ul>
+    </div>
+
+    <footer>
+        <p>Contact: zamrart@yahoo.com | © 2024 Oscar Anwar</p>
+    </footer>
+
+    <!-- Tabs Script -->
+    <script>
+       function openFullscreen(element) 
+       {
+            // For mobile devices, check if iOS (Safari does not support Fullscreen API for images)
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+            if (!isIOS) {
+                // For non-iOS devices, use Fullscreen API
+                if (element.requestFullscreen) {
+                    element.requestFullscreen();
+                } else if (element.webkitRequestFullscreen) { /* Safari */
+                    element.webkitRequestFullscreen();
+                } else if (element.msRequestFullscreen) { /* IE11 */
+                    element.msRequestFullscreen();
+                } else if (element.mozRequestFullScreen) { /* Firefox */
+                    element.mozRequestFullScreen();
+                }
+            } else {
+                // Fallback for iOS (no fullscreen support for images)
+                if (element.tagName === 'VIDEO') {
+                    // iOS has built-in video fullscreen when playing
+                    element.play();
+                } else if (element.tagName === 'IMG') {
+                    // For images, create a CSS fallback for iOS devices
+                    element.classList.toggle('fullscreen-ios');
+                }
+            }
+        }
+
+
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            
+            // Hide all tab content
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            
+            // Remove "active" class from all buttons
+            tablinks = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            
+            // Show the current tab, and add "active" class to the button that opened the tab
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        // Ensure that the active tab is displayed
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('.tab-content.active').style.display = 'block';
+        });
+    </script>
+
+</body>
+</html>
